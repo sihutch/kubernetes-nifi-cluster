@@ -28,7 +28,7 @@ spec:
           - nifi.nifi.svc.cluster.local
       containers:
         - name: nifi
-          image: xemuliam/nifi:1.5.0
+          image: parasubvert/nifi:1.6.0
           command: ["/bin/sh","-c"]
           args: ["cd /opt/nifi && ./start_nifi.sh"]
           imagePullPolicy: Always
