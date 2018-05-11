@@ -23,11 +23,14 @@ spec:
                     values:
                     - nifi
               topologyKey: "kubernetes.io/hostname"
+      dnsConfig:
+        searches:
+          - nifi.nifi.svc.cluster.local
       containers:
         - name: nifi
-          image: xemuliam/nifi:1.4.0
+          image: xemuliam/nifi:1.5.0
           command: ["/bin/sh","-c"]
-          args: ["chmod +x /opt/nifi/run.sh; cd /opt/nifi && ./run.sh"]
+          args: ["cd /opt/nifi && ./start_nifi.sh"]
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -35,9 +38,6 @@ spec:
             - containerPort: 8443
             - containerPort: 2882
           volumeMounts:
-            - name: runconfig
-              mountPath: /opt/nifi/run.sh
-              subPath: run.sh
             - name: flowfilerepository
               mountPath: /opt/nifi/flowfile_repository
             - name: databaserepository
@@ -47,18 +47,16 @@ spec:
             - name: provenancerepository
               mountPath: /opt/nifi/provenance_repository
           env:
+            - name: SERVICE
+              value: "nifi"
             - name: ZK_NODES_LIST
-              value: "zk-0.zk-hs.zookeeper.svc.cluster.local,zk-1.zk-hs.zookeeper.svc.cluster.local,zk-2.zk-hs.zookeeper.svc.cluster.local"
+              value: "zk-0.zk-hs.zookeeper.svc.cluster.local"
             - name: ZK_MONITOR_PORT
               value: "2888"
             - name: IS_CLUSTER_NODE
               value: "yes"
             - name: BANNER_TEXT
               value: "Nifi Cluster"
-      volumes:
-      - name: runconfig
-        configMap:
-          name: nifi-bootstrap
 
   volumeClaimTemplates:
   - metadata:
