@@ -23,9 +23,6 @@ spec:
                     values:
                     - nifi
               topologyKey: "kubernetes.io/hostname"
-      dnsConfig:
-        searches:
-          - nifi.nifi.svc.cluster.local
       containers:
         - name: nifi
           image: parasubvert/nifi:1.6.0
