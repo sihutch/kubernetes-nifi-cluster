@@ -13,6 +13,8 @@ spec:
       labels:
         app: nifi
     spec:
+      nodeSelector:
+        {{.nifi_nodeSelector}}
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -62,29 +64,29 @@ spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: {{.storage}}
-      storageClassName: {{.storageClassName}}
+          storage: {{.nifi_storage}}
+      storageClassName: {{.nifi_storageClassName}}
   - metadata:
       name: databaserepository
     spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: {{.storage}}
-      storageClassName: {{.storageClassName}}
+          storage: {{.nifi_storage}}
+      storageClassName: {{.nifi_storageClassName}}
   - metadata:
       name: contentrepository
     spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: {{.storage}}
-      storageClassName: {{.storageClassName}}
+          storage: {{.nifi_storage}}
+      storageClassName: {{.nifi_storageClassName}}
   - metadata:
       name: provenancerepository
     spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: {{.storage}}
-      storageClassName: {{.storageClassName}}
+          storage: {{.nifi_storage}}
+      storageClassName: {{.nifi_storageClassName}}
