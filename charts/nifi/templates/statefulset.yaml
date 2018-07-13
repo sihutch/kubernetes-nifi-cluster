@@ -4,8 +4,8 @@ metadata:
   name: nifi
 spec:
   serviceName: nifi
-  replicas: 3
-  podManagementPolicy: Parallel
+  replicas: {{ .Values.replicaCount }}
+  podManagementPolicy: {{ .Values.podManagementPolicy }}
   updateStrategy:
     type: RollingUpdate
   template:
@@ -13,8 +13,10 @@ spec:
       labels:
         app: nifi
     spec:
+      {{- with .Values.nodeSelector }}
       nodeSelector:
-        {{.nifi_nodeSelector}}
+    {{ toYaml . | indent 8 }}
+      {{- end }}
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -49,7 +51,7 @@ spec:
             - name: SERVICE
               value: "nifi"
             - name: ZK_NODES_LIST
-              value: "zk-0.zk-hs.zookeeper.svc.cluster.local"
+              value: {{ .Values.zkNodeList }}
             - name: ZK_MONITOR_PORT
               value: "2888"
             - name: IS_CLUSTER_NODE
@@ -64,29 +66,53 @@ spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: {{.nifi_storage}}
-      storageClassName: {{.nifi_storageClassName}}
+          storage: {{ .Values.repoFlow.size | quote }}
+    {{- if .Values.repoFlow.storageClass }}
+      {{- if (eq "-" .Values.repoFlow.storageClass) }}
+      storageClassName: ""
+      {{- else }}
+      storageClassName: "{{ .Values.repoFlow.storageClass }}"
+      {{- end }}
+    {{- end }}
   - metadata:
       name: databaserepository
     spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: {{.nifi_storage}}
-      storageClassName: {{.nifi_storageClassName}}
+          storage: {{ .Values.repoDb.size | quote }}
+    {{- if .Values.repoDb.storageClass }}
+      {{- if (eq "-" .Values.repoDb.storageClass) }}
+      storageClassName: ""
+      {{- else }}
+      storageClassName: "{{ .Values.repoDb.storageClass }}"
+      {{- end }}
+    {{- end }}
   - metadata:
       name: contentrepository
     spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: {{.nifi_storage}}
-      storageClassName: {{.nifi_storageClassName}}
+          storage: {{ .Values.repoContent.size | quote }}
+    {{- if .Values.repoContent.storageClass }}
+      {{- if (eq "-" .Values.repoContent.storageClass) }}
+      storageClassName: ""
+      {{- else }}
+      storageClassName: "{{ .Values.repoContent.storageClass }}"
+      {{- end }}
+    {{- end }}
   - metadata:
       name: provenancerepository
     spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: {{.nifi_storage}}
-      storageClassName: {{.nifi_storageClassName}}
+          storage: {{ .Values.repoProv.size | quote }}
+    {{- if .Values.repoProv.storageClass }}
+      {{- if (eq "-" .Values.repoProv.storageClass) }}
+      storageClassName: ""
+      {{- else }}
+      storageClassName: "{{ .Values.repoProv.storageClass }}"
+      {{- end }}
+    {{- end }}

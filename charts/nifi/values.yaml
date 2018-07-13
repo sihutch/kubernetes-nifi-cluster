@@ -1,0 +1,25 @@
+replicaCount: 2
+
+updateStrategy:
+  type: RollingUpdate
+
+podManagementPolicy: Parallel
+
+nodeSelector: { beta.kubernetes.io/instance-type: m5.large }
+zkNodeList: "zookeeper-0.zookeeper-headless.zookeeper.svc.cluster.local,zookeeper-1.zookeeper-headless.zookeeper.svc.cluster.local,zookeeper-2.zookeeper-headless.zookeeper.svc.cluster.local"
+
+repoContent:
+  size: 5Gi
+  storageClass: gp2
+
+repoProv:
+  size: 5Gi
+  storageClass: gp2
+
+repoFlow:
+  size: 5Gi
+  storageClass: gp2
+
+repoDb:
+  size: 5Gi
+  storageClass: gp2

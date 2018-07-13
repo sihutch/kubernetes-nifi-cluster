@@ -1,0 +1,11 @@
+name: nifi
+home: https://nifi.apache.org/
+version: 1.0.0
+appVersion: 3.5.4-beta
+description: An easy to use, powerful, and reliable system to process and distribute data
+icon: https://zookeeper.apache.org/images/zookeeper_small.gif
+sources:
+- https://github.com/apache/nifi
+maintainers:
+- name: Simon Hutchinson
+  email: simon.hutchinson@ixxus.com
