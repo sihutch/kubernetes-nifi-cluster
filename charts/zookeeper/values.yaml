@@ -17,6 +17,7 @@ terminationGracePeriodSeconds: 1800  # Duration in seconds a Zokeeper pod needs 
 updateStrategy:
   type: OnDelete  # Pods will only be created when you manually delete old pods.
 
+nodeSelector: { beta.kubernetes.io/instance-type: t2.large }
 podManagementPolicy: Parallel
 ## refs:
 ## - https://github.com/kubernetes/contrib/tree/master/statefulsets/zookeeper
