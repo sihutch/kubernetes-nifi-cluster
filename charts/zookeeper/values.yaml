@@ -64,17 +64,17 @@ resources: {}  # Optionally specify how much CPU and memory (RAM) each zookeeper
   #  cpu: 100m
   #  memory: 128Mi
 
-nodeSelector: {}  # Node label-values required to run zookeeper pods.
+nodeSelector: { beta.kubernetes.io/instance-type: t2.large }
 
 tolerations: []  # Node taint overrides for zookeeper pods.
 
-affinity: {}  # Criteria by which pod label-values influence scheduling for zookeeper pods.
-  # podAntiAffinity:
-  #   requiredDuringSchedulingIgnoredDuringExecution:
-  #     - topologyKey: "kubernetes.io/hostname"
-  #       labelSelector:
-  #         matchLabels:
-  #           release: zookeeper
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - topologyKey: "kubernetes.io/hostname"
+        labelSelector:
+          matchLabels:
+            release: zookeeper
 
 podAnnotations: {}  # Arbitrary non-identifying metadata for zookeeper pods.
   # prometheus.io/scrape: "true"
